@@ -1,0 +1,43 @@
+MODULOS:
+- ejs-mate: motor de plantilla con algunas mejoras sobre ejs comun.
+- connect-flash: para poder mandar mensajes entre multiples paginas. EJ: errores.
+- morgan: para ver las petisiones http del cliente q llegan al servidor.
+- passport: modulo principal para autenticar. (estrategia local)
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+MODELS: 
+- Es la encargada de tener los esquemas de la base de datos
+- module.exports = mongoose.model("users", userSchema), cuando se inserte un dato, model utiliza ese esquema(2 parametro) y lo guarda en una colecion(1 parametro) y lo exporta para autenticarlo con passport.
+- bcrypt.hashSync= agarra una contraseña y la encripta.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+PASSPORT: 
+
+-almaneca la informacion de los usuarios en un archivo dentro del navegador (sesiones)
+
+passport.use(1, 2)
+- 1 (local-register): nombre metodo de autencicacion
+- 2 (new localStrategy): recibe dos params, un objeto de configuracion y un callback de ejecucion.
+- objeto: los datos que recibimos del cliente.
+- callback: lo que vamos a hacer con esos datos (validaciones, msg de errores, etc).
+- (passReqToCallback: true ): para poder recibir tambien otros datos req, por si el cliente nos manda mas datos en el register
+- done(null, user): devuelve null si hay error o user ( el usuario creado)
+-una vez autenticado el usuario,termina el proceso (done), y ahi nos da los datos del user autenticado,
+- ahora entra el metodo serializeUser(), para guardar el id en un archivo interno del navegador para no tener q autenticar de nuevo por cada pagina q el usuario visite-
+- de esos datos (user) solo queremos el id para intercambiarlo entre multiples paginas de mi navegador
+- ahora entra el metodo deserializeUser(): el navegador manda a nuestro servidor el id y ahora lo buscamos en la base de datos para ver si coinciden, y termina mandando de nuevo el user al navegador. (esto cada vez q un usuario se autentique)
+
+
+-Tambien se ejecuta como middleware porq es el encargado de la validacion del usuario
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+INDEX.JS:
+- path.join: metodo para unir directorios
+- __dirname es una constante que devuelve la direccion del archivo y lo concatena en ,"views" 
+- app.use(express.urlencoded({ extended: false })) : avisarle a express q va a recibir un formulario y solo eso, no algo como una imagen, por eso el false.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
